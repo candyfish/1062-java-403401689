@@ -1,32 +1,42 @@
 package First_page;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
-  
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
  
 public class Start extends JFrame implements ActionListener{
      
-     
+	private boolean noInput;
+	
     public static void main(String[] args) {
         new Start();
     }
      
     Start() {    
-        this.setTitle("Background");
+        this.setTitle("First_page");
         this.setLayout(null);
-         
+        
+       
+        
+        //按鈕
         JButton Start = new JButton();
         this.add(Start);
         JButton Exit = new JButton();
@@ -46,6 +56,24 @@ public class Start extends JFrame implements ActionListener{
         this.getLayeredPane().add(bkLabel,new Integer(Integer.MIN_VALUE));
         JPanel ctPanel = (JPanel)this.getContentPane();
         ctPanel.setOpaque(false);
+        
+        JLabel label1=new JLabel("PLAYER NAME : ");
+        label1.setFont(new Font("標楷體", 1, 40));
+        label1.setForeground(Color.red);
+        label1.setBounds(50,50,350,80);
+        //label1.setIcon(exit_icon);
+        this.add(label1);
+        
+        JTextField NameInput = new JTextField();
+        //NameInput.addFocusListener(new JTextFieldHintListener("提示文字", NameInput));
+        JTextField txtArea = new JTextField(); 
+        NameInput.addActionListener(this); 
+        NameInput.setFont(new Font("標楷體", 1, 40));
+        NameInput.setBounds(350,70,350,40); 
+        add(NameInput); 
+        txtArea.setEditable(false); 
+        txtArea.setBounds(20,80,170,20); 
+        //add(txtArea); 
          
         //設置按鈕樣式
         Start.setIcon(start_icon);
@@ -54,6 +82,7 @@ public class Start extends JFrame implements ActionListener{
         Start.setContentAreaFilled(false); //設置背景透明
         Start.addActionListener(new ActionListener(){ 
     		public void actionPerformed(ActionEvent e){ 
+    			System.out.print( NameInput.getText() + "\n" );
     			Start_game();
     			} 
     		}); //按鈕監聽
@@ -70,7 +99,8 @@ public class Start extends JFrame implements ActionListener{
         Score.setIcon(score_icon);
         Score.setBounds(500,150, 170,53);
         Score.setContentAreaFilled(false); 
-         
+        
+
          
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent arg0) {
@@ -79,6 +109,8 @@ public class Start extends JFrame implements ActionListener{
         });
         this.setVisible(true);
      }
+    
+    
      
      //Exit對話框 & Exit
      public void windowClosing(WindowEvent e){
@@ -99,11 +131,37 @@ public class Start extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/* if(e.getSource()==Start){
-			 
-		 }*/
+
 		
 	}
+	
+	//TextField提示
+	/*public class JTextFieldHintListener implements FocusListener {
+	    private String mHindText;
+	    private JTextField mTextField;
+
+	    public JTextFieldHintListener(String hintText, JTextField textField) {
+	        this.mHindText = hintText;
+	        this.mTextField = textField;
+	        textField.setForeground(Color.GRAY);
+	    }
+	    @Override
+	    public void focusGained(FocusEvent e) {
+	        String temp = mTextField.getText();
+	        if(temp.equals(mHindText)){
+	            mTextField.setText("");
+	            mTextField.setForeground(Color.BLACK);
+	        }
+	    }
+	    @Override
+	    public void focusLost(FocusEvent e) {
+	        String temp = mTextField.getText();
+	        if(temp.equals("")){
+	            mTextField.setForeground(Color.GRAY);
+	            mTextField.setText(mHindText);
+	        }
+	    }
+	}*/
 
 
  }
