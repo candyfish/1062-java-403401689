@@ -1,4 +1,5 @@
-package Start_page;
+package Score_page;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -21,34 +22,37 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
+import Start_page.Start;
  
-public class Start extends JFrame implements ActionListener{
+public class End_score extends JFrame implements ActionListener{
      
 	private boolean noInput;
 	
     public static void main(String[] args) {
-        new Start();
+        new End_score();
     }
      
-    Start() {    
-        this.setTitle("Start_page");
+    End_score() {    
+        this.setTitle("");
         this.setLayout(null);
         
         //Start,Exit,Score按鈕新增
-        JButton Start = new JButton();
-        this.add(Start);
+        JButton Restart = new JButton();
+        this.add(Restart);
         JButton Exit = new JButton();
         this.add(Exit);
         JButton Score = new JButton();
         this.add(Score);
         
         //Start,Exit,Score按鈕圖案
-        ImageIcon start_icon = new ImageIcon(Start.class.getClassLoader().getResource("start_icon.png"));
+        ImageIcon restart_icon = new ImageIcon(Start.class.getClassLoader().getResource("restart_icon.png"));
         ImageIcon exit_icon = new ImageIcon(Start.class.getClassLoader().getResource("exit_icon.png"));
         ImageIcon score_icon = new ImageIcon(Start.class.getClassLoader().getResource("score_icon.png"));
-         
+        ImageIcon score_img = new ImageIcon(Start.class.getClassLoader().getResource("score_img.png"));
+        
         //背景
-        ImageIcon background = new ImageIcon(Start.class.getClassLoader().getResource("Start_background.jpg"));
+        ImageIcon background = new ImageIcon(Start.class.getClassLoader().getResource("Start_background_3.png"));
         JLabel bkLabel = new JLabel(background);
         bkLabel.setBounds(0, 0,background.getIconWidth(), background.getIconHeight());
         this.setSize(background.getIconWidth(), background.getIconHeight()+40);
@@ -56,40 +60,34 @@ public class Start extends JFrame implements ActionListener{
         JPanel ctPanel = (JPanel)this.getContentPane();
         ctPanel.setOpaque(false);
         
-        //PLAYER NAME JLABEL
-        JLabel label1=new JLabel("PLAYER NAME : ");
-        label1.setFont(new Font("標楷體?", 1, 40));
+        String score = Connectmysql.Get_score.main();
+        
+        //SCORE_IMG JLABEL
+        JLabel Score_img=new JLabel();
+        Score_img.setBounds(870,50,400,400);
+        Score_img.setIcon(score_img);
+        this.add(Score_img);
+        
+        //SCORE JLABEL
+        JLabel label1=new JLabel(score);
+        label1.setFont(new Font("標楷體?", 1, 220));
         label1.setForeground(Color.getHSBColor(178, 34, 34));
-        label1.setBounds(50,50,350,80);
-        //label1.setIcon(exit_icon);
+        label1.setBounds(800,0,350,250);
         this.add(label1);
         
-        //PLAYER NAME JTextField
-        JTextField NameInput = new JTextField();
-        NameInput.addActionListener(this); 
-        NameInput.setFont(new Font("標楷體", 1, 40));
-        NameInput.setForeground(Color.getHSBColor(25, 86, 55));
-        NameInput.setBounds(370,70,350,40); 
-        NameInput.setCaretColor(Color.yellow);
-        NameInput.setOpaque(false);
-        add(NameInput); 
-   
-        //設置Start按鈕
-        Start.setIcon(start_icon);
-        Start.setBounds(100,150, 170,53);//設置大小
-        Start.setContentAreaFilled(false); //設置透明背景
-        Start.addActionListener(new ActionListener(){ 
+        //設置Restart按鈕
+        Restart.setIcon(restart_icon);
+        Restart.setBounds(100,95, 200,53);
+        Restart.setContentAreaFilled(false);
+        Restart.addActionListener(new ActionListener(){ 
     		public void actionPerformed(ActionEvent e){ 
-    			String playername = NameInput.getText();
-    			System.out.print( playername + "\n" );
-    			Insert_playername(playername);//新增PlayerName到資料庫
-    			Start_game();//進入Play_page
+    			Restart();//進入Score_page
     			} 
     		}); //監聽
-        
+             
         //設置Exit按鈕
         Exit.setIcon(exit_icon);
-        Exit.setBounds(300,150, 170,53);
+        Exit.setBounds(330,95, 170,53);
         Exit.setContentAreaFilled(false);
         Exit.addActionListener(new ActionListener(){ 
 		public void actionPerformed(ActionEvent e){ 
@@ -99,14 +97,14 @@ public class Start extends JFrame implements ActionListener{
         
         //設置Score按鈕
         Score.setIcon(score_icon);
-        Score.setBounds(500,150, 170,53);
+        Score.setBounds(530,95, 170,53);
         Score.setContentAreaFilled(false);
         Score.addActionListener(new ActionListener(){ 
     		public void actionPerformed(ActionEvent e){ 
     			Score_list();//進入Score_page
     			} 
     		}); //監聽
-        
+               
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent arg0) {
                 System.exit(0);
@@ -115,6 +113,8 @@ public class Start extends JFrame implements ActionListener{
         this.setVisible(true);
      }
     
+    
+     
      //Exit對話窗
      public void windowClosing(WindowEvent e){
          int result=JOptionPane.showConfirmDialog(this, "是否確定要離開?", "確定??", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -127,11 +127,6 @@ public class Start extends JFrame implements ActionListener{
          }            
      }
      
-     //Start_game
-     public void Start_game(){
-    	 this.setVisible(false);  
-    	 Game_page.Table.main(null);
-     }
      
      //Enter_scorepage
      public void Score_list(){
@@ -139,10 +134,11 @@ public class Start extends JFrame implements ActionListener{
     	 Score_page.BestScore_list.main(null);
      }
      
-     //Insert_playername
-     public void Insert_playername(String playername){
-    	 Connectmysql.UpdatePlayer_NameTime.main(playername);
-     }
+     //Restart
+     public void Restart(){
+    	    this.setVisible(false);  
+    	   	Start_page.Start.main(null);
+    	    }      
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
